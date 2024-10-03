@@ -5,8 +5,8 @@ export class CarServices {
     Add(data){
         return axiosInstance.post("/cars/add", data)
     }
-    Get(data){
-        return axiosInstance.get("/cars/get", data)
+    Get(id, data){
+        return axiosInstance.get(`/cars/${id}/cars`, data)
     }
     GetById(){
         

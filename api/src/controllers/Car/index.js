@@ -28,7 +28,7 @@ const Add = async (req, res) => {
                 userId: Number(userId),
                 brand,
                 model,
-                year: Number(year),
+                year,
                 motor,
                 condition,
                 kilometer: Number(kilometer),
@@ -47,8 +47,14 @@ const Add = async (req, res) => {
 }
 
 const Get = async (req, res) => {
+    const { id } = req.params
+
     try {
-        const cars = prisma.car.findMany()
+        const cars = await prisma.car.findMany({
+            where: {
+                userId: Number(id)
+            }
+        })
         return res.status(200).json(cars)
 
     } catch(error) {
@@ -57,22 +63,23 @@ const Get = async (req, res) => {
 }
 
 const GetById = async (req, res) => {
-
     const { id } = req.params
 
-    const car = await prisma.car.findUnique({
-        where: {
-            id: Number(id)
-        }
-    })
-
-    if(!car){
-        return res.status(404).json({ msg: 'Carro não encontrado' })
-    }
     try {
+        const car = await prisma.car.findUnique({
+            where: {
+                id: Number(id)
+            }
+        })
 
-    } catch(error) {
+        if (!car) {
+            return res.status(404).json({ msg: 'Carro não encontrado' })
+        }
+
+        return res.status(200).json(car)
+    } catch (error) {
         console.error("Erro ao buscar carro:", error)
+        return res.status(500).json({ msg: 'Erro ao buscar carro' })
     }
 }
 

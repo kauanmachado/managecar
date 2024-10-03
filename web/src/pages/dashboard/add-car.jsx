@@ -9,8 +9,6 @@ export default function AddCar(){
             <Sidebar/>
 
             <div className="transition-all duration-300 flex-1 p-10">
-                <h1 className="flex items-center gap-2 text-2xl mb-8 font-bold text-gray-500"><FaPlus />Adicionar carro</h1>
-
                 <FormAddCar />
             </div>
         </div>

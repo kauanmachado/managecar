@@ -34,7 +34,7 @@ export default function Dashboard() {
             <Sidebar />
 
             <div className="transition-all duration-300 flex-1 p-12 ">
-                <h1 className="flex items-center gap-2 text-2xl mb-6 font-bold text-gray-500"><FaUser />Geral</h1>
+                <h1 className="flex items-center gap-2 text-2xl mb-6 font-bold"><FaUser className="text-indigo-800"/>Geral</h1>
                 <h1 className="text-2xl font-bold mb-4 text-gray-700">{data.name}</h1>
                 <div className="space-y-4">
                     <p className="flex items-center text-gray-700 gap-2"><MdEmail />{data.email}</p>
