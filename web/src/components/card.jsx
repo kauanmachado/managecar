@@ -2,11 +2,14 @@ import { useState } from 'react'
 import Car from '../assets/imgs/gol-power.jpg'
 import { CarServices } from '../services/CarService'
 import Modal from './modal'
+import EditCarModal from './edit-car-modal'
 
 const carServices = new CarServices()
 
 export default function Card({ car, onDelete }){
     const [isModalOpen, setModalOpen] = useState(false)
+    const [isEditModalOpen, setEditModalOpen] = useState(false)
+    
 
     async function handleDelete(id){
         try {
@@ -31,7 +34,7 @@ export default function Card({ car, onDelete }){
             <button onClick={() => handleDelete(car.id)} className="font-bold bg-transparent hover:bg-red-200 mt-4 text-red-500 white py-2 px-4 rounded-xl w-full transition-all">
                     Remover
             </button>
-            <button className="font-bold bg-transparent hover:bg-indigo-200 mt-4 text-indigo-800 py-2 px-4 rounded-xl w-full transition-all">
+            <button onClick={() => setEditModalOpen(true)} className="font-bold bg-transparent hover:bg-indigo-200 mt-4 text-indigo-800 py-2 px-4 rounded-xl w-full transition-all">
                     Editar
             </button>
             </div>
@@ -41,6 +44,8 @@ export default function Card({ car, onDelete }){
             </button>
 
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} car={car}/>
+
+            <EditCarModal isOpen={isEditModalOpen} onClose={() => setEditModalOpen(false)} car={car} />
 
             </div>
         </div>

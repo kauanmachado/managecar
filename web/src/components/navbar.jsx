@@ -1,6 +1,8 @@
 import logo from '../assets/imgs/logo_managecar.png'
 
 export default function Navbar(){
+    
+
     return (
         <header className="w-full bg-white shadow-lg p-6 bg-white z-10">
             <div className="grid grid-cols-3">
