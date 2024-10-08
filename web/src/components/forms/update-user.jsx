@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { UserServices } from "../../services/UserService"
 import GetId from "../../functions/get-id-from-token"
+import { useEffect, useState } from "react"
 
 const schema = z.object({
     email: z.string().email({ message: 'Por favor, insira um email válido.' }),
@@ -20,8 +21,27 @@ const schema = z.object({
 const userServices = new UserServices()
 
 export default function FormUpdateUser() {
+    const [data, setData] = useState(true)
     const userId = GetId()
-    const { register, handleSubmit, formState: { errors } } = useForm({
+
+    useEffect(() => {
+        async function GetUser(){
+            try {
+                const res = await userServices.Get(userId)
+                setData(res.data)
+                setValue('email', res.data.email);
+                setValue('name', res.data.name);
+                setValue('phone', res.data.phone);
+                setValue('address', res.data.address);
+            } catch (error) {
+                console.error("Erro ao buscar dados do usuário", error)
+            }
+        }
+
+        GetUser()
+    }, [userId])
+
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm({
         resolver: zodResolver(schema)
     })
 

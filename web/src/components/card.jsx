@@ -3,6 +3,7 @@ import Car from '../assets/imgs/gol-power.jpg'
 import { CarServices } from '../services/CarService'
 import Modal from './modal'
 import EditCarModal from './edit-car-modal'
+import SoldCheckbox from './sold-checkbox'
 
 const carServices = new CarServices()
 
@@ -38,15 +39,17 @@ export default function Card({ car, onDelete }){
                     Editar
             </button>
             </div>
-
+            
             <button onClick={() => setModalOpen(true)} className="bg-indigo-800 hover:bg-indigo-900 mt-4 text-white py-2 px-4 rounded-xl w-full transition-all">
                     Ver detalhes
             </button>
+            
+            
 
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} car={car}/>
 
             <EditCarModal isOpen={isEditModalOpen} onClose={() => setEditModalOpen(false)} car={car} />
-
+            
             </div>
         </div>
     )

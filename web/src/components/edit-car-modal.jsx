@@ -10,7 +10,7 @@ const carServices = new CarServices();
 export default function EditCarModal({ isOpen, onClose, car }) {
   const userId = GetId();
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     // Preenche os campos com os dados do carro
     defaultValues: {
       brand: car?.brand,
@@ -41,9 +41,10 @@ export default function EditCarModal({ isOpen, onClose, car }) {
       formData.append("img", data.img[0]);
       formData.append("userId", userId);
 
-      const res = await carServices.Update(formData);
+
+      const res = await carServices.Update(car.id, formData);
       console.log(res);
-      onClose(); // Fecha o modal após a atualização
+      onClose();
     } catch (error) {
       console.error(error);
     }
@@ -83,6 +84,7 @@ export default function EditCarModal({ isOpen, onClose, car }) {
           <button type="submit" className="bg-indigo-800 hover:bg-indigo-900 text-white py-2 px-4 rounded-lg w-full">
             Salvar Alterações
           </button>
+
         </form>
         <button onClick={onClose} className="w-full mt-4 bg-gray-200 text-gray-600 py-2 px-4 rounded-lg">
           Cancelar

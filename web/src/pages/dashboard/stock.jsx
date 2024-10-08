@@ -30,15 +30,15 @@ export default function Stock() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen">
       <Sidebar />
 
-      <div className="flex-1 p-10 bg-white shadow-lg rounded-lg transition-all duration-300">
+      <div className="flex-1 p-10 transition-all duration-300">
         <h1 className="flex items-center gap-2 text-2xl mb-6 font-bold ">
           <FaCar className="text-indigo-800"/> Estoque
         </h1>
 
-        <div className="mb-8 p-4 rounded-lg shadow border bg-transparent">
+        <div className="mb-8 p-4 rounded-lg shadow border bg-white">
           <div className="flex justify-between items-center gap-4">
             <Input
               type="search"
