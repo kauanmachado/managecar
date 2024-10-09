@@ -14,6 +14,7 @@ export default function FormAddCar() {
   });
 
   async function UpdateCar(data) {
+    console.log(data)
     try {
       const formData = new FormData()
 

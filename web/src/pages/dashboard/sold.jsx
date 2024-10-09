@@ -94,10 +94,10 @@ export default function Stock() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {cars.length > 0 ? (
             cars.map((car) => (
-              <Card key={car.id} car={car} onDelete={handleDeleteCar} className="transition-transform transform hover:scale-105 shadow-lg" />
+              <Card key={car.id} car={car} onDelete={handleDeleteCar} isSold={!car.available} className="transition-transform transform hover:scale-105 shadow-lg" />
             ))
           ) : (
-            <p className="text-center text-lg text-gray-500">Nenhum carro disponível</p>
+            <p className="text-center text-lg text-gray-500">Nenhum carro disponivel na lista de vendas</p>
           )}
         </div>
       </div>
