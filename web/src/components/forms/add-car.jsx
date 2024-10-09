@@ -4,35 +4,38 @@ import { useForm } from "react-hook-form";
 import { CarServices } from "../../services/CarService";
 import GetId from "../../functions/get-id-from-token";
 import { FaCar } from "react-icons/fa"; // Importar ícone para o botão
+import { useNavigate } from "react-router-dom";
 
 const carServices = new CarServices();
 
 export default function FormAddCar() {
-  const userId = GetId();
+  const navigate = useNavigate()
+  const userId = GetId()
   const { register, handleSubmit, formState: { errors } } = useForm({
     // resolver: zodResolver(schema)
   });
 
   async function AddCar(data) {
     try {
-      const formData = new FormData();
+      const formData = new FormData()
 
-      formData.append("brand", data.brand);
-      formData.append("model", data.model);
-      formData.append("year", data.year);
-      formData.append("motor", data.motor);
-      formData.append("kilometer", data.kilometer);
-      formData.append("condition", data.condition);
-      formData.append("fuelType", data.fuelType);
-      formData.append("color", data.color);
-      formData.append("price", data.price);
-      formData.append("img", data.img[0]);
-      formData.append("userId", userId);
+      formData.append("brand", data.brand)
+      formData.append("model", data.model)
+      formData.append("year", data.year)
+      formData.append("motor", data.motor)
+      formData.append("kilometer", data.kilometer)
+      formData.append("condition", data.condition)
+      formData.append("fuelType", data.fuelType)
+      formData.append("color", data.color)
+      formData.append("price", data.price)
+      formData.append("img", data.img[0])
+      formData.append("userId", userId)
 
-      const res = await carServices.Add(formData);
-      console.log(res);
+      const res = await carServices.Add(formData)
+      navigate('/stock')
+      console.log(res)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
 

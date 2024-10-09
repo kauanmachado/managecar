@@ -8,6 +8,7 @@ router.post('/add', upload.single('img'), car.Add)
 router.get('/:id/cars', car.Get)
 router.get('/:id', car.GetById)
 router.post('/:id', car.Update)
+router.post('/sell/:id', car.Sell)
 router.delete('/:id', car.Delete)
 
 module.exports = router

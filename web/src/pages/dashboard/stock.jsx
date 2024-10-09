@@ -6,27 +6,36 @@ import { CarServices } from "../../services/CarService";
 import { useEffect, useState } from "react";
 import GetId from "../../functions/get-id-from-token";
 
-const carServices = new CarServices();
+const carServices = new CarServices()
 export default function Stock() {
-  const [cars, setCars] = useState([]);
+  
+  const [cars, setCars] = useState([])
 
-  const userId = GetId();
+  const userId = GetId()
 
   useEffect(() => {
     async function Get() {
       try {
-        const res = await carServices.Get(userId);
-        setCars(res.data);
+        const res = await carServices.Get(userId)
+        const data = res.data
+        .filter((car) => car.available === true)
+        .map((car) => {
+          return {
+            ...car,
+            imgUrl: `http://localhost:9090/${car.img}`,
+          }
+        })
+        setCars(data)
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
     }
 
-    Get();
-  }, [userId]);
+    Get()
+  }, [userId])
 
   const handleDeleteCar = (id) => {
-    setCars((prevCars) => prevCars.filter((car) => car.id !== id)); // Remove o carro da lista
+    setCars((prevCars) => prevCars.filter((car) => car.id !== id))
   };
 
   return (

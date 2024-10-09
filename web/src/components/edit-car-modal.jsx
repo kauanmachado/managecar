@@ -8,10 +8,9 @@ import { CarServices } from "../services/CarService";
 const carServices = new CarServices();
 
 export default function EditCarModal({ isOpen, onClose, car }) {
-  const userId = GetId();
+  const userId = GetId()
 
   const { register, handleSubmit, formState: { errors } } = useForm({
-    // Preenche os campos com os dados do carro
     defaultValues: {
       brand: car?.brand,
       model: car?.model,

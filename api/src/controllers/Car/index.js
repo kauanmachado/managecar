@@ -34,7 +34,7 @@ const Add = async (req, res) => {
                 kilometer: Number(kilometer),
                 fuelType,
                 color,
-                price: Number(kilometer),
+                price: Number(price),
                 available: true,
                 img
             }
@@ -55,7 +55,17 @@ const Get = async (req, res) => {
                 userId: Number(id)
             }
         })
-        return res.status(200).json(cars)
+        const carsWithImg = cars.map((car) => {
+
+            const imgUrl = `/uploads/${car.img}`
+    
+            return {
+                ...car,
+                imgUrl
+            }
+            })
+        
+        return res.status(200).json(carsWithImg)
 
     } catch(error) {
         console.error("Erro ao buscar carros:", error)
@@ -84,7 +94,47 @@ const GetById = async (req, res) => {
 }
 
 const Update = async (req, res) => {
+    const {
+        userId,
+        brand,
+        model,
+        year,
+        motor,
+        condition,
+        kilometer,
+        fuelType,
+        color,
+        price,
+    } = req.body
 
+    try {
+        const img = req.file ? req.file.path : null
+
+        if(!img){
+            return res.status(404).json({ msg: "A imagem é obrigatória!" })
+        }
+
+        const car = await prisma.car.update({
+            data: {
+                userId: Number(userId),
+                brand,
+                model,
+                year,
+                motor,
+                condition,
+                kilometer: Number(kilometer),
+                fuelType,
+                color,
+                price: Number(price),
+                available: true,
+                img
+            }
+        })
+
+        return res.status(201).json(car)
+    } catch (error) {
+        console.error("Erro ao editar carro:", error)
+    }
 }
 
 const Delete = async (req, res) => {
@@ -103,10 +153,29 @@ const Delete = async (req, res) => {
     }
 }
 
+const Sell = async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const sold = await prisma.car.update({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                available: false
+            }
+        })
+        return res.status(201).json(sold)
+    } catch (error) {
+        console.error("Erro ao marcar carro como vendido:", error)
+    }
+}
+
 module.exports = {
     Add,
     Get,
     GetById,
     Update,
-    Delete
+    Delete,
+    Sell
 }

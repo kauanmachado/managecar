@@ -17,4 +17,7 @@ export class CarServices {
     Delete(id){
         return axiosInstance.delete(`/cars/${id}`)
     }
+    Sell(id){
+        return axiosInstance.post(`/cars/sell/${id}`)
+    }
 }

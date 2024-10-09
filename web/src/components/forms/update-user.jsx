@@ -5,6 +5,7 @@ import { z } from "zod"
 import { UserServices } from "../../services/UserService"
 import GetId from "../../functions/get-id-from-token"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const schema = z.object({
     email: z.string().email({ message: 'Por favor, insira um email válido.' }),
@@ -21,6 +22,7 @@ const schema = z.object({
 const userServices = new UserServices()
 
 export default function FormUpdateUser() {
+    const navigate = useNavigate()
     const [data, setData] = useState(true)
     const userId = GetId()
 
@@ -29,10 +31,11 @@ export default function FormUpdateUser() {
             try {
                 const res = await userServices.Get(userId)
                 setData(res.data)
-                setValue('email', res.data.email);
-                setValue('name', res.data.name);
-                setValue('phone', res.data.phone);
-                setValue('address', res.data.address);
+                setValue('email', res.data.email)
+                setValue('name', res.data.name)
+                setValue('phone', res.data.phone)
+                setValue('address', res.data.address)
+                
             } catch (error) {
                 console.error("Erro ao buscar dados do usuário", error)
             }
@@ -48,10 +51,8 @@ export default function FormUpdateUser() {
     async function updateUser(data) {
         try {
             const { confirm_password, ...restData } = data
-            const res = await userServices.Update(userId, restData)
-            console.log(res)
-            const token = res.data.token
-            console.log(token)
+            await userServices.Update(userId, restData)
+            navigate('/dashboard')
 
         } catch (error) {
             console.error(error)

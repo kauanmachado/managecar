@@ -7,27 +7,45 @@ import SoldCheckbox from './sold-checkbox'
 
 const carServices = new CarServices()
 
-export default function Card({ car, onDelete }){
+export default function Card({ car, onDelete, onSell }){
     const [isModalOpen, setModalOpen] = useState(false)
     const [isEditModalOpen, setEditModalOpen] = useState(false)
     
 
     async function handleDelete(id){
-        try {
-            await carServices.Delete(id)
-            onDelete(id)
-        } catch (error) {
-            console.error("Erro ao remover carro: ", error)
+        const isConfirmed = window.confirm("Tem certeza que deseja remover este veículo?")
+
+        if(isConfirmed) {
+            try {
+                const res = await carServices.Delete(id)
+                onDelete(id)
+                console.log(res)
+            } catch (error) {
+                console.error("Erro ao remover carro: ", error)
+            }
+        }
+    }
+
+    async function handleSell(id){
+        const isConfirmed = window.confirm("Tem certeza que deseja marcar este veículo como vendido?")
+    
+        if (isConfirmed) {
+            try {
+                await carServices.Sell(id)
+                onSell(id);
+            } catch (error) {
+                console.error("Erro ao marcar o carro como vendido:", error)
+            }
         }
     }
 
     return (
         <div className="md:w-[300px] bg-white shadow rounded-lg cursor-pointer hover:shadow-lg transition-all">
-            <img src={car.img}></img>
+            <img src={car.imgUrl} className="md:h-[300px] w-full"></img>
             <div className="p-4">
             <p className="font-bold">{car.brand} {car.model}</p>
             <p className="">{car.year}</p>
-            <p className="">{car.kilometer}</p>
+            <p className="">{car.kilometer} KM</p>
             <p className="text-gray-600">{car.condition}</p>
             <p className="text-1xl text-green-500 font-bold mb-4">R${car.price}</p>
             <hr/>
@@ -42,6 +60,10 @@ export default function Card({ car, onDelete }){
             
             <button onClick={() => setModalOpen(true)} className="bg-indigo-800 hover:bg-indigo-900 mt-4 text-white py-2 px-4 rounded-xl w-full transition-all">
                     Ver detalhes
+            </button>
+
+            <button onClick={() => handleSell(car.id)} className="bg-green-800 hover:bg-green-900 mt-4 text-white py-2 px-4 rounded-xl w-full transition-all">
+                    Marcar como vendido
             </button>
             
             
