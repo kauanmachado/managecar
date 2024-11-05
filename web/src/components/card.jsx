@@ -3,13 +3,14 @@ import Car from '../assets/imgs/gol-power.jpg'
 import { CarServices } from '../services/CarService'
 import Modal from './modal'
 import EditCarModal from './edit-car-modal'
-import SoldCheckbox from './sold-checkbox'
+import { useNavigate } from 'react-router-dom'
 
 const carServices = new CarServices()
 
 export default function Card({ car, onDelete, onSell, isSold }) {
     const [isModalOpen, setModalOpen] = useState(false)
     const [isEditModalOpen, setEditModalOpen] = useState(false)
+    const navigate = useNavigate()
 
 
     async function handleDelete(id) {
@@ -32,7 +33,8 @@ export default function Card({ car, onDelete, onSell, isSold }) {
         if (isConfirmed) {
             try {
                 await carServices.Sell(id)
-                onSell(id);
+                onSell(id)
+                navigate("/sold")
             } catch (error) {
                 console.error("Erro ao marcar o carro como vendido:", error)
             }

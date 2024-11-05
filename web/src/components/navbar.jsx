@@ -16,7 +16,7 @@ export default function Navbar(){
                 </div>
 
                 <div className="flex justify-center items-center">
-                    <p className="text-end">Bem-vindo! <p className="font-bold text-indigo-800">Stock Carros</p></p>
+                    <p className="text-end font-bold">Bem-vindo!</p>
                 </div>
 
 

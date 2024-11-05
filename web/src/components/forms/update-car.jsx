@@ -7,17 +7,17 @@ import { FaCar } from "react-icons/fa"; // Importar ícone para o botão
 
 const carServices = new CarServices();
 
-export default function FormAddCar() {
+export default function FormUpdateCar() {
   const userId = GetId();
   const { register, handleSubmit, formState: { errors } } = useForm({
     // resolver: zodResolver(schema)
   });
 
-  async function UpdateCar(data) {
+  async function UpdateCar(id, data) {
     console.log(data)
     try {
       const formData = new FormData()
-
+      id = data.id
       formData.append("brand", data.brand)
       formData.append("model", data.model)
       formData.append("year", data.year)

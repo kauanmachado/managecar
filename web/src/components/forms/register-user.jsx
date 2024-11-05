@@ -3,6 +3,7 @@ import Input from "../input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { UserServices } from "../../services/UserService"
+import { useNavigate } from "react-router-dom"
 
 const schema = z.object({
     email: z.string().email({ message: 'Por favor, insira um email válido.' }),
@@ -19,21 +20,26 @@ const schema = z.object({
 const userServices = new UserServices()
 
 export default function RegisterUserForm() {
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         // mode: "onBlur",
         resolver: zodResolver(schema)
     })
+    const navigate = useNavigate()
 
     async function registerUser(data) {
         try {
             const { confirm_password, ...restData } = data
             const res = await userServices.SignUp(restData)
-            console.log(res)
-            const token = res.data.token
-            console.log(token)
 
+            if(res.data.error == "Email ja cadastrado!"){
+                alert(res.data.error)
+            }
+            alert("Usuário cadastrado com sucesso!")
+            navigate("/")
+            console.log(res)
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 

@@ -94,8 +94,9 @@ const GetById = async (req, res) => {
 }
 
 const Update = async (req, res) => {
+    const { id } = req.params
+
     const {
-        userId,
         brand,
         model,
         year,
@@ -115,8 +116,10 @@ const Update = async (req, res) => {
         }
 
         const car = await prisma.car.update({
+            where: {
+                id: Number(id)
+            },
             data: {
-                userId: Number(userId),
                 brand,
                 model,
                 year,
@@ -129,9 +132,10 @@ const Update = async (req, res) => {
                 available: true,
                 img
             }
+           
         })
 
-        return res.status(201).json(car)
+        return res.status(200).json(car)
     } catch (error) {
         console.error("Erro ao editar carro:", error)
     }

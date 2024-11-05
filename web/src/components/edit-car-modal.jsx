@@ -4,12 +4,13 @@ import { FaCar } from "react-icons/fa"; // Ícone para o botão
 import Input from "./input";
 import GetId from "../functions/get-id-from-token";
 import { CarServices } from "../services/CarService";
+import { useNavigate } from "react-router-dom";
 
 const carServices = new CarServices();
 
-export default function EditCarModal({ isOpen, onClose, car }) {
+export default function EditCarModal({ isOpen, onClose, car, onUpdate }) {
   const userId = GetId()
-
+  const navigate = useNavigate()
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       brand: car?.brand,
@@ -26,30 +27,31 @@ export default function EditCarModal({ isOpen, onClose, car }) {
 
   async function UpdateCar(data) {
     try {
-      const formData = new FormData();
+      const formData = new FormData()
 
-      formData.append("brand", data.brand);
-      formData.append("model", data.model);
-      formData.append("year", data.year);
-      formData.append("motor", data.motor);
-      formData.append("kilometer", data.kilometer);
-      formData.append("condition", data.condition);
-      formData.append("fuelType", data.fuelType);
-      formData.append("color", data.color);
-      formData.append("price", data.price);
-      formData.append("img", data.img[0]);
-      formData.append("userId", userId);
+      formData.append("brand", data.brand)
+      formData.append("model", data.model)
+      formData.append("year", data.year)
+      formData.append("motor", data.motor)
+      formData.append("kilometer", data.kilometer)
+      formData.append("condition", data.condition)
+      formData.append("fuelType", data.fuelType)
+      formData.append("color", data.color)
+      formData.append("price", data.price)
+      formData.append("img", data.img[0])
+      formData.append("userId", userId)
 
 
-      const res = await carServices.Update(car.id, formData);
-      console.log(res);
-      onClose();
+      const res = await carServices.Update(car.id, formData)
+      console.log(res)
+      onClose()
+      window.location.reload()
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-10 ">
