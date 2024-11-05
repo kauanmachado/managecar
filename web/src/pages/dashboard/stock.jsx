@@ -6,53 +6,59 @@ import { CarServices } from "../../services/CarService";
 import { useEffect, useState } from "react";
 import GetId from "../../functions/get-id-from-token";
 
-const carServices = new CarServices()
+const carServices = new CarServices();
 export default function Stock() {
 
-  const [cars, setCars] = useState([])
-  const [filteredCars, setFilteredCars] = useState([])
-  const [search, setSearch] = useState("")
-  const [year, setYear] = useState("")
-  const [condition, setCondition] = useState("")
-  const [brand, setBrand] = useState("")
-  const [selectedCar, setSelectedCar] = useState(null)
-  const userId = GetId()
+  const [cars, setCars] = useState([]);
+  const [filteredCars, setFilteredCars] = useState([]);
+  const [searchModel, setSearchModel] = useState("");
+  const [searchBrand, setSearchBrand] = useState("");
+  const [searchYear, setSearchYear] = useState("");
+  const [condition, setCondition] = useState("");
+  const userId = GetId();
 
   useEffect(() => {
     async function Get() {
       try {
-        const res = await carServices.Get(userId)
+        const res = await carServices.Get(userId);
         const data = res.data
           .filter((car) => car.available === true)
           .map((car) => {
             return {
               ...car,
               imgUrl: `http://localhost:9090/${car.img}`,
-            }
-          })
-        setCars(data)
-        setFilteredCars(data)
+            };
+          });
+        setCars(data);
+        setFilteredCars(data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     }
 
-    Get()
-  }, [userId])
+    Get();
+  }, [userId]);
 
   const handleFilter = () => {
     let filtered = cars;
-
-    // Filtro por nome do carro
-    if (search) {
+    console.log(cars)
+    // Filtro por modelo
+    if (searchModel) {
       filtered = filtered.filter((car) =>
-        car.name?.toLowerCase().includes(search.toLowerCase()) // Verifica se 'car.name' existe antes de chamar 'toLowerCase'
+        car.model?.toLowerCase().includes(searchModel.toLowerCase())
+      );
+    }
+
+    // Filtro por marca
+    if (searchBrand) {
+      filtered = filtered.filter((car) =>
+        car.brand?.toLowerCase().includes(searchBrand.toLowerCase())
       );
     }
 
     // Filtro por ano
-    if (year) {
-      filtered = filtered.filter((car) => car.year === parseInt(year));
+    if (searchYear) {
+      filtered = filtered.filter((car) => car.year === searchYear);
     }
 
     // Filtro por condição (novo, usado, semi-novo)
@@ -60,27 +66,22 @@ export default function Stock() {
       filtered = filtered.filter((car) => car.condition === condition);
     }
 
-    // Filtro por marca
-    if (brand) {
-      filtered = filtered.filter((car) =>
-        car.brand?.toLowerCase() === brand.toLowerCase() // Verifica se 'car.brand' existe antes de chamar 'toLowerCase'
-      );
-    }
-
     setFilteredCars(filtered);
   };
 
+  // Atualiza os filtros quando qualquer estado de busca muda
   useEffect(() => {
-    handleFilter()
-  }, [search, year, condition, brand, cars])
+    handleFilter();
+  }, [searchModel, searchBrand, searchYear, condition, cars]);
 
   const handleDeleteCar = (id) => {
-    setCars((prevCars) => prevCars.filter((car) => car.id !== id))
+    setCars((prevCars) => prevCars.filter((car) => car.id !== id));
   };
 
   const handleSellCar = (id) => {
-    setCars((prevCars) => prevCars.filter((car) => car.id !== id))
+    setCars((prevCars) => prevCars.filter((car) => car.id !== id));
   };
+
   return (
     <div className="flex min-h-screen">
       <Sidebar />
@@ -94,29 +95,29 @@ export default function Stock() {
           <div className="flex justify-between items-center gap-4">
             <Input
               type="search"
-              name="search"
+              name="searchModel"
               placeholder="Pesquisar por modelo"
               className="w-full p-3 shadow border rounded-lg shadow-sm focus:ring focus:ring-blue-300 transition duration-200 ease-in-out"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={searchModel}
+              onChange={(e) => setSearchModel(e.target.value)}
             />
 
             <Input
               type="search"
-              name="search"
+              name="searchBrand"
               placeholder="Pesquisar por marca"
               className="w-full p-3 shadow border rounded-lg shadow-sm focus:ring focus:ring-blue-300 transition duration-200 ease-in-out"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={searchBrand}
+              onChange={(e) => setSearchBrand(e.target.value)}
             />
 
             <Input
-              type="search"
-              name="search"
+              type="string"
+              name="searchYear"
               placeholder="Pesquisar por ano"
               className="w-full p-3 shadow border rounded-lg shadow-sm focus:ring focus:ring-blue-300 transition duration-200 ease-in-out"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={searchYear}
+              onChange={(e) => setSearchYear(e.target.value)}
             />
 
             <select
@@ -125,11 +126,10 @@ export default function Stock() {
               value={condition}
               onChange={(e) => setCondition(e.target.value)}
             >
-              <option value="novo">Novo</option>
-              <option value="usado">Usado</option>
-              <option value="semi-novo">Semi-novo</option>
+              <option value="Novo">Novo</option>
+              <option value="Usado">Usado</option>
+              <option value="Semi-novo">Semi-novo</option>
             </select>
-
           </div>
         </div>
 
