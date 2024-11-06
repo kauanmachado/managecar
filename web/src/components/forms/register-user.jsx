@@ -34,6 +34,7 @@ export default function RegisterUserForm() {
 
             if(res.data.error == "Email ja cadastrado!"){
                 alert(res.data.error)
+                return
             }
             alert("Usuário cadastrado com sucesso!")
             navigate("/")

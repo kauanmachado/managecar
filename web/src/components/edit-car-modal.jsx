@@ -22,6 +22,7 @@ export default function EditCarModal({ isOpen, onClose, car, onUpdate }) {
       fuelType: car?.fuelType,
       color: car?.color,
       price: car?.price,
+      img: car?.img[0]
     }
   });
 
